@@ -28,12 +28,14 @@
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
+				float4 color : COLOR;
 			};
 
 			struct FragIn
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
+				float4 color : COLOR;
 			};
 
 			sampler2D _MainTex;
@@ -46,13 +48,14 @@
 				FragIn o;
 				o.vertex = UnityObjectToClipPos(i.vertex);
 				o.uv = TRANSFORM_TEX(i.uv, _MainTex);
+				o.color = i.color * _Color;
 				return o;
 			}
 			
 			fixed4 frag(FragIn i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
-				col = clamp(col * _Color, 0, 1);
+				col = clamp(col * i.color, 0, 1);
 				return col;
 			}
 			ENDCG
