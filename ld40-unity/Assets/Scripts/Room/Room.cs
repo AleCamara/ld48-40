@@ -20,6 +20,17 @@ public class RoomSituation
             numCharacters[charIdx] = 0;
         }
     }
+
+    public override string ToString()
+    {
+        string result = "RoomSituation:";
+        for (int characterTypeIdx = 0; characterTypeIdx < numCharacters.Length; ++characterTypeIdx)
+        {
+            CharacterType characterType = (CharacterType)characterTypeIdx;
+            result += "\n\tNum Type " + characterType.ToString() + ": " + numCharacters[characterTypeIdx].ToString();
+        }
+        return result;
+    }
 }
 
 public class RoomHappiness
@@ -58,6 +69,17 @@ public class RoomHappiness
             _numCharacters[charIdx] = 0;
         }
     }
+
+    public override string ToString()
+    {
+        string result = "RoomHappiness:";
+        for (int characterTypeIdx = 0; characterTypeIdx < characterHappiness.Length; ++characterTypeIdx)
+        {
+            CharacterType characterType = (CharacterType)characterTypeIdx;
+            result += "\n\tType " + characterType.ToString() + ": " + characterHappiness[characterTypeIdx].ToString("0.00");
+        }
+        return result;
+    }
 }
 
 public class Room : MonoBehaviour
@@ -71,6 +93,9 @@ public class Room : MonoBehaviour
     public Color uiHappyColor = Color.green;
     public Color uiNeutralColor = Color.yellow;
     public Color uiUnhappyColor = Color.red;
+
+    [Header("Debug")]
+    public Text debugText = null;
 
     private List<Character> _characters = new List<Character>();
     private RoomSituation _roomSituation = new RoomSituation();
@@ -112,6 +137,11 @@ public class Room : MonoBehaviour
         for (int charTypeIdx = 0; charTypeIdx < numCharTypes; ++charTypeIdx)
         {
             uiCharacterImages[charTypeIdx].color = GetHappinessColor(_roomHappiness.characterHappiness[charTypeIdx]);
+        }
+
+        if (null != debugText)
+        {
+            debugText.text = _roomSituation.ToString() + "\n\n" + _roomHappiness.ToString();
         }
     }
 

@@ -13,6 +13,9 @@ public class Character : MonoBehaviour
     public CharacterType characterType = CharacterType.A;
     public float speed = 1f;
 
+    [Header("Happiness")]
+    public float peopleTolerance = 1f;
+
     [Header("Character Face")]
     public SpriteRenderer faceRenderer = null;
     public Sprite happyFace = null;
@@ -63,29 +66,30 @@ public class Character : MonoBehaviour
 
     public void EvaluateRoomSituation(RoomSituation roomSituation)
     {
+        int numA = roomSituation.numCharacters[(int)CharacterType.A];
+        int numB = roomSituation.numCharacters[(int)CharacterType.B];
+        int numC = roomSituation.numCharacters[(int)CharacterType.C];
         switch (characterType)
         {
             case CharacterType.A:
                 {
-                    int numNonA = roomSituation.numCharacters[(int)CharacterType.B] + roomSituation.numCharacters[(int)CharacterType.C];
-                    int numA = roomSituation.numCharacters[(int)CharacterType.A];
-                    happiness = numA - numNonA;
+                    happiness = numA - (numB + numC) * 0.5f;
                 }
                 break;
 
             case CharacterType.B:
                 {
-                    happiness = 1f;
+                    happiness = (2f * numB) - (numC + numA) / 3f;
                 }
                 break;
 
             case CharacterType.C:
-                int numNonC = roomSituation.numCharacters[(int)CharacterType.A] + roomSituation.numCharacters[(int)CharacterType.B];
-                int numC = roomSituation.numCharacters[(int)CharacterType.C];
-                happiness = numNonC - numC;
+                {
+                    happiness = (numA + numB) - 2f * numC;
+                }
                 break;
         }
-        happiness = Mathf.Clamp(happiness, -1f, 1f);
+        happiness = Mathf.Clamp(happiness * peopleTolerance, -1f, 1f);
         UpdateFaceSprite();
     }
 
