@@ -61,17 +61,16 @@ public class VisitorSpawner : MonoBehaviour
 
         if (spawnLanes[laneIdx].standByCharacter != null)
         {
-            spawnLanes[laneIdx].standByCharacter.targetPosition = spawnLanes[laneIdx].readyPosition.position;
+            spawnLanes[laneIdx].standByCharacter.targetPosition = spawnLanes[laneIdx].readyPosition;
             spawnLanes[laneIdx].readyCharacter = spawnLanes[laneIdx].standByCharacter;
         }
 
         GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
         Character character = characterGO.GetComponent<Character>();
         spawnLanes[laneIdx].standByCharacter = character;
-
-        Vector3 targetPosition = spawnLanes[laneIdx].standByPosition.position;
-        character.targetPosition = targetPosition;
-        characterGO.transform.position = targetPosition;
+        
+        character.targetPosition = spawnLanes[laneIdx].standByPosition;
+        characterGO.transform.position = spawnLanes[laneIdx].standByPosition.position;
     }
 
     private CharacterType GetRandomCharacterTypeFromHand()

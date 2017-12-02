@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
         private set;
     }
 
-    public Vector3 targetPosition
+    public Transform targetPosition
     {
         get;
         set;
@@ -44,8 +44,11 @@ public class Character : MonoBehaviour
             return;
         }
 
-        Vector3 displacementDirection = targetPosition - transform.position;
+        Vector3 displacementDirection = targetPosition.position - transform.position;
+        displacementDirection.z = 0f;
         float distance = displacementDirection.magnitude;
+        displacementDirection.Normalize();
+
         float frameMaxDisplacement = speed * Time.deltaTime;
         distance = Mathf.Min(distance, frameMaxDisplacement);
         Vector3 newPosition = transform.position + displacementDirection * distance;

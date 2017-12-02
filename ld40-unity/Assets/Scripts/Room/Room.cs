@@ -62,6 +62,8 @@ public class RoomHappiness
 
 public class Room : MonoBehaviour
 {
+    public Transform[] roomDancePositions = new Transform[0];
+
     [Header("UI")]
     public Image[] uiCharacterImages = null;
     public Color uiHappyColor = Color.green;
@@ -71,9 +73,17 @@ public class Room : MonoBehaviour
     private List<Character> _characters = new List<Character>();
     private RoomSituation _roomSituation = new RoomSituation();
     private RoomHappiness _roomHappiness = new RoomHappiness();
+    private Character[] _characterInDancePosition = null;
+
+    private void Start()
+    {
+        _characterInDancePosition = new Character[roomDancePositions.Length];
+    }
 
     private void Update()
     {
+        UpdateCharacterDancePositions();
+
         _roomSituation.Clear();
         _roomHappiness.Clear();
 
@@ -98,6 +108,26 @@ public class Room : MonoBehaviour
         }
     }
 
+    public Transform GetRandomFreeDancePosition()
+    {
+        Transform freePosition = null;
+
+        int numPositions = roomDancePositions.Length;
+        int startIndex = UnityEngine.Random.Range(0, numPositions);
+        int currentIndex = (startIndex + 1) % numPositions;
+        while ((_characterInDancePosition[currentIndex] != null) && (currentIndex != startIndex))
+        {
+            currentIndex = (currentIndex + 1) % numPositions;
+        }
+
+        if (currentIndex != startIndex)
+        {
+            freePosition = roomDancePositions[currentIndex];
+        }
+
+        return freePosition;
+    }
+
     public void AddCharacter(Character character)
     {
         if (!_characters.Contains(character))
@@ -111,6 +141,23 @@ public class Room : MonoBehaviour
         if (_characters.Contains(character))
         {
             _characters.Remove(character);
+        }
+    }
+
+    private void UpdateCharacterDancePositions()
+    {
+        for (int characterIdx = 0; characterIdx < _characterInDancePosition.Length; ++characterIdx)
+        {
+            _characterInDancePosition[characterIdx] = null;
+        }
+
+        foreach (Character character in _characters)
+        {
+            int index = Array.IndexOf(roomDancePositions, character.targetPosition);
+            if (index >= 0)
+            {
+                _characterInDancePosition[index] = character;
+            }
         }
     }
 

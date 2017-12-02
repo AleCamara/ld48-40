@@ -60,14 +60,13 @@ public class CharacterInputReceiver : BaseInputReceiver
             _currentRoom.AddCharacter(character);
             Vector3 targetPosition = ray.origin;
             targetPosition.z = character.transform.position.z;
-            character.targetPosition = targetPosition;
+            character.targetPosition = _currentRoom.GetRandomFreeDancePosition();
             character.transform.position = targetPosition;
             _visitorSpawner.SpawnReplacementForCharacter(character);
         }
         else
         {
             character.transform.position = _initialPosition;
-            character.targetPosition = _initialPosition;
         }
 
         character.isDragged = false;
