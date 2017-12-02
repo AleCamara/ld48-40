@@ -59,14 +59,14 @@ public class Character : MonoBehaviour
 
             case CharacterType.B:
                 {
-                    int numNonB = roomSituation.numCharacters[(int)CharacterType.A] + roomSituation.numCharacters[(int)CharacterType.C];
-                    int numB = roomSituation.numCharacters[(int)CharacterType.B];
-                    happiness = numNonB - numB;
+                    happiness = 1f;
                 }
                 break;
 
             case CharacterType.C:
-                happiness = 1f;
+                int numNonC = roomSituation.numCharacters[(int)CharacterType.A] + roomSituation.numCharacters[(int)CharacterType.B];
+                int numC = roomSituation.numCharacters[(int)CharacterType.C];
+                happiness = numNonC - numC;
                 break;
         }
         happiness = Mathf.Clamp(happiness, -1f, 1f);
