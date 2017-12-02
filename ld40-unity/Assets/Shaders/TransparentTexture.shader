@@ -10,7 +10,7 @@
 		Tags
 		{
 			"RenderType" = "Transparent"
-			"RenderQueue" = "Transparent"
+			"Queue" = "Transparent"
 		}
 
 		Pass

@@ -10,11 +10,39 @@ public enum CharacterType
 public class Character : MonoBehaviour
 {
     public CharacterType characterType = CharacterType.A;
+    public float speed = 1f;
 
     public float happiness
     {
         get;
         private set;
+    }
+
+    public Vector3 targetPosition
+    {
+        get;
+        set;
+    }
+
+    public bool isDragged
+    {
+        get;
+        set;
+    }
+
+    private void Update()
+    {
+        if (isDragged)
+        {
+            return;
+        }
+
+        Vector3 displacementDirection = targetPosition - transform.position;
+        float distance = displacementDirection.magnitude;
+        float frameMaxDisplacement = speed * Time.deltaTime;
+        distance = Mathf.Min(distance, frameMaxDisplacement);
+        Vector3 newPosition = transform.position + displacementDirection * distance;
+        transform.position = newPosition;
     }
 
     public void EvaluateRoomSituation(RoomSituation roomSituation)
