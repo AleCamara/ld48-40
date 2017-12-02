@@ -37,6 +37,12 @@ public class Character : MonoBehaviour
         set;
     }
 
+    public Room currentRoom
+    {
+        get;
+        set;
+    }
+
     private void Update()
     {
         if (isDragged)

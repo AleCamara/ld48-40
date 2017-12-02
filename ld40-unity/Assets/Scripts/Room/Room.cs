@@ -63,6 +63,7 @@ public class RoomHappiness
 public class Room : MonoBehaviour
 {
     public Transform[] roomDancePositions = new Transform[0];
+    public float capacityFractionFromTotal = 3f / 4f;
 
     [Header("UI")]
     public Image[] uiCharacterImages = null;
@@ -74,10 +75,13 @@ public class Room : MonoBehaviour
     private RoomSituation _roomSituation = new RoomSituation();
     private RoomHappiness _roomHappiness = new RoomHappiness();
     private Character[] _characterInDancePosition = null;
+    private int _capacity = 0;
 
     private void Start()
     {
-        _characterInDancePosition = new Character[roomDancePositions.Length];
+        int numDancePositions = roomDancePositions.Length;
+        _characterInDancePosition = new Character[numDancePositions];
+        _capacity = Mathf.FloorToInt(capacityFractionFromTotal * numDancePositions);
     }
 
     private void Update()
@@ -108,6 +112,11 @@ public class Room : MonoBehaviour
         }
     }
 
+    public bool HasCapacity()
+    {
+        return _characters.Count < _capacity;
+    }
+
     public Transform GetRandomFreeDancePosition()
     {
         Transform freePosition = null;
@@ -133,6 +142,8 @@ public class Room : MonoBehaviour
         if (!_characters.Contains(character))
         {
             _characters.Add(character);
+            character.currentRoom = this;
+            Debug.Log("Adding character (" + character.name + ") to room (" + name + ")");
         }
     }
 
@@ -141,6 +152,8 @@ public class Room : MonoBehaviour
         if (_characters.Contains(character))
         {
             _characters.Remove(character);
+            character.currentRoom = null;
+            Debug.Log("Removing character (" + character.name + ") from room (" + name + ")");
         }
     }
 

@@ -84,12 +84,18 @@ public class RoomCharacterSpawner : MonoBehaviour
             return;
         }
 
-        GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
-        Character character = characterGO.GetComponent<Character>();
+        Room room = spawnPositions[roomIndex].room;
+        if (room.HasCapacity())
+        {
+            GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
+            Character character = characterGO.GetComponent<Character>();
 
-        Vector3 characterPosition = spawnPositions[roomIndex].positionHand.GetRandomElement().position;
-        characterPosition.z = characterGO.transform.position.z;
-        characterGO.transform.position = characterPosition;
-        character.targetPosition = spawnPositions[roomIndex].room.GetRandomFreeDancePosition();
+            Vector3 characterPosition = spawnPositions[roomIndex].positionHand.GetRandomElement().position;
+            characterPosition.z = characterGO.transform.position.z;
+            characterGO.transform.position = characterPosition;
+            character.targetPosition = room.GetRandomFreeDancePosition();
+
+            room.AddCharacter(character);
+        }
     }
 }

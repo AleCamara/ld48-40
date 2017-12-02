@@ -10,7 +10,6 @@ public class CharacterInputReceiver : BaseInputReceiver
 
     private Vector3 _initialPosition = Vector3.zero;
     private RaycastHit2D[] _raycastResults = null;
-    private Room _currentRoom = null;
     private VisitorSpawner _visitorSpawner = null;
 
     private void Awake()
@@ -25,9 +24,9 @@ public class CharacterInputReceiver : BaseInputReceiver
 
     public override void OnTouchBegan(TouchEventInfo eventInfo)
     {
-        if (null != _currentRoom)
+        if (null != character.currentRoom)
         {
-            _currentRoom.RemoveCharacter(character);
+            character.currentRoom.RemoveCharacter(character);
         }
         _initialPosition = character.transform.position;
         character.isDragged = true;
@@ -45,24 +44,29 @@ public class CharacterInputReceiver : BaseInputReceiver
         // Check if there's a room below
         Ray ray = Camera.main.ScreenPointToRay(eventInfo.touchPositionPix);
         int numHits = Physics2D.RaycastNonAlloc(ray.origin, ray.direction, _raycastResults, raycastDistance, raycastLayerMask);
+        Room droppedToRoom = null;
         for (int hitIdx = 0; hitIdx < numHits; ++hitIdx)
         {
             Room room = _raycastResults[hitIdx].collider.GetComponentInParent<Room>();
             if (null != room)
             {
-                _currentRoom = room;
+                droppedToRoom = room;
                 break;
             }
         }
 
-        if (null != _currentRoom)
+        if ((null != droppedToRoom) && (droppedToRoom.HasCapacity()))
         {
-            _currentRoom.AddCharacter(character);
+            droppedToRoom.AddCharacter(character);
             Vector3 targetPosition = ray.origin;
             targetPosition.z = character.transform.position.z;
-            character.targetPosition = _currentRoom.GetRandomFreeDancePosition();
+            character.targetPosition = droppedToRoom.GetRandomFreeDancePosition();
             character.transform.position = targetPosition;
-            _visitorSpawner.SpawnReplacementForCharacter(character);
+
+            if (null != _visitorSpawner)
+            {
+                _visitorSpawner.SpawnReplacementForCharacter(character);
+            }
         }
         else
         {
