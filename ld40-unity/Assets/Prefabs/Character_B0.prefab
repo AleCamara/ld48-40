@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4831904180782394}
   - component: {fileID: 114290018978803118}
+  - component: {fileID: 111870057509528676}
   m_Layer: 0
   m_Name: Character_B0
   m_TagString: Untagged
@@ -264,12 +265,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1616173296760356}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.607, y: 0.565, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.163, y: 0.473, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4468906302959610}
-  m_RootOrder: 2
+  m_Father: {fileID: 4178367153885356}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4130024907502668
 Transform:
@@ -277,12 +278,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1539068856964614}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.238, y: 0.092, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4774773603913658}
-  m_RootOrder: 1
+  m_Children:
+  - {fileID: 4208761041420430}
+  m_Father: {fileID: 4149974816884212}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4149974816884212
 Transform:
@@ -290,25 +292,27 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1371911643060460}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029504295}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4130024907502668}
   m_Father: {fileID: 4774773603913658}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -0.58666676, z: 0}
 --- !u!4 &4178367153885356
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1430868537054514}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.381, y: 0.092, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.238, y: 0.092, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4468906302959610}
-  m_RootOrder: 1
+  m_Children:
+  - {fileID: 4053350354158222}
+  m_Father: {fileID: 4265345001560930}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4208761041420430
 Transform:
@@ -316,12 +320,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1521443042652044}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.401, y: 0.565, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.16299999, y: 0.473, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4774773603913658}
-  m_RootOrder: 2
+  m_Father: {fileID: 4130024907502668}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4265345001560930
 Transform:
@@ -329,13 +333,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1753637710226994}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029504295}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4178367153885356}
   m_Father: {fileID: 4468906302959610}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -0.58666676, z: 0}
 --- !u!4 &4332603344658310
 Transform:
   m_ObjectHideFlags: 1
@@ -356,12 +361,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1872825069049188}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.347, y: -0.141, z: 0}
+  m_LocalPosition: {x: 0.321, y: -0.141, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4265345001560930}
-  - {fileID: 4178367153885356}
-  - {fileID: 4053350354158222}
   m_Father: {fileID: 4961333339902532}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -376,8 +379,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4149974816884212}
-  - {fileID: 4130024907502668}
-  - {fileID: 4208761041420430}
   m_Father: {fileID: 4961333339902532}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -506,6 +507,21 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!111 &111870057509528676
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058538303270226}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 71a3d9a5f41ddf14ea1b3850733a7275, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 71a3d9a5f41ddf14ea1b3850733a7275, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114256820287862352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -604,9 +620,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0.1735, y: -0.0705, z: -1}
-  - {x: -0.017000005, y: -0.024500001, z: -1}
-  - {x: -0.13, y: 0.212, z: -1}
+  - {x: 0.1605, y: -0.0705, z: 0}
+  - {x: 0.2795, y: -0.024500001, z: -0.0000007022022}
+  - {x: 0.361, y: 0.212, z: -0.0000011831223}
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 0.05
@@ -691,9 +707,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -0.1605, y: -0.0705, z: -1}
-  - {x: -0.2795, y: -0.024500001, z: -1}
-  - {x: -0.361, y: 0.212, z: -1}
+  - {x: -0.1605, y: -0.0705, z: 0}
+  - {x: -0.041500002, y: -0.024500001, z: -0.0000007022022}
+  - {x: 0.03999999, y: 0.212, z: -0.0000011831222}
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 0.05
