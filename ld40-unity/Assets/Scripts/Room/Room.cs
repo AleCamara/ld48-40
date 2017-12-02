@@ -63,7 +63,8 @@ public class RoomHappiness
 public class Room : MonoBehaviour
 {
     public Transform[] roomDancePositions = new Transform[0];
-    public float capacityFractionFromTotal = 3f / 4f;
+    public float spawnCapacityFractionFromTotal = 3f / 4f;
+    public float dropCapacityFractionFromTotal = 4f / 5f;
 
     [Header("UI")]
     public Image[] uiCharacterImages = null;
@@ -75,13 +76,15 @@ public class Room : MonoBehaviour
     private RoomSituation _roomSituation = new RoomSituation();
     private RoomHappiness _roomHappiness = new RoomHappiness();
     private Character[] _characterInDancePosition = null;
-    private int _capacity = 0;
+    private int _spawnCapacity = 0;
+    private int _dropCapacity = 0;
 
     private void Start()
     {
         int numDancePositions = roomDancePositions.Length;
         _characterInDancePosition = new Character[numDancePositions];
-        _capacity = Mathf.FloorToInt(capacityFractionFromTotal * numDancePositions);
+        _spawnCapacity = Mathf.FloorToInt(spawnCapacityFractionFromTotal * numDancePositions);
+        _dropCapacity = Mathf.FloorToInt(dropCapacityFractionFromTotal * numDancePositions);
     }
 
     private void Update()
@@ -112,9 +115,14 @@ public class Room : MonoBehaviour
         }
     }
 
-    public bool HasCapacity()
+    public bool HasSpawnCapacity()
     {
-        return _characters.Count < _capacity;
+        return _characters.Count < _spawnCapacity;
+    }
+
+    public bool HasDropCapacity()
+    {
+        return _characters.Count < _dropCapacity;
     }
 
     public Transform GetRandomFreeDancePosition()
@@ -143,7 +151,6 @@ public class Room : MonoBehaviour
         {
             _characters.Add(character);
             character.currentRoom = this;
-            Debug.Log("Adding character (" + character.name + ") to room (" + name + ")");
         }
     }
 
@@ -153,7 +160,6 @@ public class Room : MonoBehaviour
         {
             _characters.Remove(character);
             character.currentRoom = null;
-            Debug.Log("Removing character (" + character.name + ") from room (" + name + ")");
         }
     }
 

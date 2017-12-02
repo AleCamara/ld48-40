@@ -9,6 +9,8 @@ public class RoomSpawnPositions
 
     [HideInInspector]
     public RandomHand<Transform> positionHand = null;
+    [HideInInspector]
+    public bool stopSpawning = false;
 }
 
 public class RoomCharacterSpawner : MonoBehaviour
@@ -85,17 +87,24 @@ public class RoomCharacterSpawner : MonoBehaviour
         }
 
         Room room = spawnPositions[roomIndex].room;
-        if (room.HasCapacity())
+        if (!room.HasSpawnCapacity())
         {
-            GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
-            Character character = characterGO.GetComponent<Character>();
-
-            Vector3 characterPosition = spawnPositions[roomIndex].positionHand.GetRandomElement().position;
-            characterPosition.z = characterGO.transform.position.z;
-            characterGO.transform.position = characterPosition;
-            character.targetPosition = room.GetRandomFreeDancePosition();
-
-            room.AddCharacter(character);
+            spawnPositions[roomIndex].stopSpawning = true;
         }
+
+        if (spawnPositions[roomIndex].stopSpawning)
+        {
+            return;
+        }
+        
+        GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
+        Character character = characterGO.GetComponent<Character>();
+
+        Vector3 characterPosition = spawnPositions[roomIndex].positionHand.GetRandomElement().position;
+        characterPosition.z = characterGO.transform.position.z;
+        characterGO.transform.position = characterPosition;
+        character.targetPosition = room.GetRandomFreeDancePosition();
+
+        room.AddCharacter(character);
     }
 }

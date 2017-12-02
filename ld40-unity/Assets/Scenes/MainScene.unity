@@ -1668,7 +1668,7 @@ MonoBehaviour:
   - {fileID: 1058538303270226, guid: c444f5c0b9f3e7a47b0dbf1b712b31cc, type: 2}
   - {fileID: 1426248335885296, guid: 0e9ad1e0638423042be04903a46911a5, type: 2}
   visitorParent: {fileID: 1772539187}
-  visitorHand: 000000000000000000000000000000000000000000000000010000000100000002000000020000000200000002000000
+  visitorHand: 000000000000000000000000000000000000000000000000000000000100000001000000020000000200000002000000
   spawnPositions:
   - room: {fileID: 530257043}
     spawnPositions:
@@ -1678,6 +1678,7 @@ MonoBehaviour:
     - {fileID: 1706102880}
     - {fileID: 1492006901}
     - {fileID: 858832225}
+    stopSpawning: 0
   - room: {fileID: 329831621}
     spawnPositions:
     - {fileID: 161746549}
@@ -1686,6 +1687,7 @@ MonoBehaviour:
     - {fileID: 205806642}
     - {fileID: 24425066}
     - {fileID: 2073003954}
+    stopSpawning: 0
   - room: {fileID: 1943939024}
     spawnPositions:
     - {fileID: 241200054}
@@ -1694,6 +1696,7 @@ MonoBehaviour:
     - {fileID: 1676873805}
     - {fileID: 1026594331}
     - {fileID: 208905166}
+    stopSpawning: 0
   startRate: 0.33333334
   endRate: 20
   timeToReachEndRateS: 1
@@ -2436,7 +2439,8 @@ MonoBehaviour:
   - {fileID: 1168219272}
   - {fileID: 1867086709}
   - {fileID: 1233354753}
-  capacityFractionFromTotal: 0.75
+  spawnCapacityFractionFromTotal: 0.75
+  dropCapacityFractionFromTotal: 0.8
   uiCharacterImages:
   - {fileID: 1849813768}
   - {fileID: 389469947}
@@ -3476,7 +3480,8 @@ MonoBehaviour:
   - {fileID: 950840066}
   - {fileID: 513520442}
   - {fileID: 622111427}
-  capacityFractionFromTotal: 0.75
+  spawnCapacityFractionFromTotal: 0.75
+  dropCapacityFractionFromTotal: 0.8
   uiCharacterImages:
   - {fileID: 1620171147}
   - {fileID: 235941056}
@@ -11978,7 +11983,8 @@ MonoBehaviour:
   - {fileID: 1475808426}
   - {fileID: 937290940}
   - {fileID: 1440421188}
-  capacityFractionFromTotal: 0.75
+  spawnCapacityFractionFromTotal: 0.75
+  dropCapacityFractionFromTotal: 0.8
   uiCharacterImages:
   - {fileID: 509131550}
   - {fileID: 491275893}
