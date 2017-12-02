@@ -16,5 +16,10 @@ public class LineRendererSynchronizer : MonoBehaviour
         }
         lineRenderer.positionCount = numPoints;
         lineRenderer.SetPositions(points);
+
+        if (Application.isPlaying)
+        {
+            lineRenderer.enabled = true;
+        }
     }
 }
