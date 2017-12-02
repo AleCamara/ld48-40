@@ -58,8 +58,10 @@ public class CharacterInputReceiver : BaseInputReceiver
         if (null != _currentRoom)
         {
             _currentRoom.AddCharacter(character);
-            character.targetPosition = ray.origin;
-            character.transform.position = ray.origin;
+            Vector3 targetPosition = ray.origin;
+            targetPosition.z = character.transform.position.z;
+            character.targetPosition = targetPosition;
+            character.transform.position = targetPosition;
             _visitorSpawner.SpawnReplacementForCharacter(character);
         }
         else

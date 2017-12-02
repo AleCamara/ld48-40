@@ -9,8 +9,15 @@ public enum CharacterType
 
 public class Character : MonoBehaviour
 {
+    [Header("Character Settings")]
     public CharacterType characterType = CharacterType.A;
     public float speed = 1f;
+
+    [Header("Character Face")]
+    public SpriteRenderer faceRenderer = null;
+    public Sprite happyFace = null;
+    public Sprite neutralFace = null;
+    public Sprite sadFace = null;
 
     public float happiness
     {
@@ -70,5 +77,21 @@ public class Character : MonoBehaviour
                 break;
         }
         happiness = Mathf.Clamp(happiness, -1f, 1f);
+        UpdateFaceSprite();
+    }
+
+    private void UpdateFaceSprite()
+    {
+        Sprite currentSprite = neutralFace;
+        if (happiness > 0.5f)
+        {
+            currentSprite = happyFace;
+        }
+        else if (happiness < -0.5f)
+        {
+            currentSprite = sadFace;
+        }
+
+        faceRenderer.sprite = currentSprite;
     }
 }

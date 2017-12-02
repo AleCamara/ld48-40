@@ -22,7 +22,6 @@ public class VisitorSpawner : MonoBehaviour
     public SpawnLane[] spawnLanes = new SpawnLane[0];
 
     private List<CharacterType> _currentVisitorHand = new List<CharacterType>();
-    private Character[] _standByCharacters = new Character[0];
 
     private void Start()
     {
