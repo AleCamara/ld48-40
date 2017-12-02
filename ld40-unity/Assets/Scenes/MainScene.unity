@@ -491,7 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 577852907}
   - component: {fileID: 577852908}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,6 +662,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterRoot: {fileID: 1308262565}
+  raycastDistance: 100
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &929946003
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,6 +1338,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterRoot: {fileID: 1817064982}
+  raycastDistance: 100
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1956840822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,3 +1549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterRoot: {fileID: 1027028506}
+  raycastDistance: 100
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
