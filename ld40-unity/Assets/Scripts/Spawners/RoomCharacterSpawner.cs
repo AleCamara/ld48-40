@@ -20,6 +20,7 @@ public class RoomCharacterSpawner : MonoBehaviour
     public Transform visitorParent = null;
     public CharacterType[] visitorHand = new CharacterType[0];
     public RoomSpawnPositions[] spawnPositions = new RoomSpawnPositions[0];
+    public int numTimesRoomInHand = 4;
 
     [Header("Spawn Rate")]
     public float startRate = 1f / 10f;
@@ -37,10 +38,12 @@ public class RoomCharacterSpawner : MonoBehaviour
     {
         _characterHand = new RandomHand<CharacterType>(visitorHand);
 
-        int[] defaultRoomHand = new int[spawnPositions.Length];
-        for (int index = 0; index < spawnPositions.Length; ++index)
+        int numRooms = spawnPositions.Length;
+        int numRoomsInHand = numTimesRoomInHand * numRooms;
+        int[] defaultRoomHand = new int[numRoomsInHand];
+        for (int index = 0; index < numRoomsInHand; ++index)
         {
-            defaultRoomHand[index] = index;
+            defaultRoomHand[index] = index % numRooms;
         }
         _roomHand = new RandomHand<int>(defaultRoomHand);
 

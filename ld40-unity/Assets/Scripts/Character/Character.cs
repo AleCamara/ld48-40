@@ -73,19 +73,19 @@ public class Character : MonoBehaviour
         {
             case CharacterType.A:
                 {
-                    happiness = numA - (numB + numC) * 0.5f;
+                    happiness = 1 + (numA - (numB + numC));
                 }
                 break;
 
             case CharacterType.B:
                 {
-                    happiness = (2f * numB) - (numC + numA) / 3f;
+                    happiness = 1 + (numB - 2f * numC);
                 }
                 break;
 
             case CharacterType.C:
                 {
-                    happiness = (numA + numB) - 2f * numC;
+                    happiness = 1 + ((numA + numB) - 5f * numC);
                 }
                 break;
         }
@@ -96,11 +96,11 @@ public class Character : MonoBehaviour
     private void UpdateFaceSprite()
     {
         Sprite currentSprite = neutralFace;
-        if (happiness > 0.5f)
+        if (happiness > 0.25f)
         {
             currentSprite = happyFace;
         }
-        else if (happiness < -0.5f)
+        else if (happiness < -0.25f)
         {
             currentSprite = sadFace;
         }
