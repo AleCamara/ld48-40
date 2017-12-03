@@ -11,6 +11,7 @@ public class CharacterInputReceiver : BaseInputReceiver
     private Vector3 _initialPosition = Vector3.zero;
     private RaycastHit2D[] _raycastResults = null;
     private VisitorSpawner _visitorSpawner = null;
+    private Room _characterPreviousRoom = null;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class CharacterInputReceiver : BaseInputReceiver
     {
         if (null != character.currentRoom)
         {
+            _characterPreviousRoom = character.currentRoom;
             character.currentRoom.RemoveCharacter(character);
         }
         _initialPosition = character.transform.position;
@@ -71,6 +73,10 @@ public class CharacterInputReceiver : BaseInputReceiver
         else
         {
             character.transform.position = _initialPosition;
+            if (null != _characterPreviousRoom)
+            {
+                _characterPreviousRoom.AddCharacter(character);
+            }
         }
 
         character.isDragged = false;
