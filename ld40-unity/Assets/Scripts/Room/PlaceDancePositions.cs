@@ -5,6 +5,7 @@ using UnityEditor;
 
 public class PlaceDancePositions : MonoBehaviour
 {
+    public Room room = null;
     public Transform parentTransform = null;
     public int numPositionsX = 5;
     public int numPositionsY = 15;
@@ -27,16 +28,20 @@ public class PlaceDancePositions : MonoBehaviour
     {
         RemovePositions();
 
+        int numPositions = numPositionsX * numPositionsY;
+        room.roomDancePositions = new Transform[numPositions];
+
         for (int y = 0; y < numPositionsY; ++y)
         {
             for (int x = 0; x < numPositionsX; ++x)
             {
-                PlacePosition(x, y);
+                int index = x + y * numPositionsX;
+                room.roomDancePositions[index] = PlacePosition(x, y);
             }
         }
     }
 
-    private void PlacePosition(int x, int y)
+    private Transform PlacePosition(int x, int y)
     {
         Vector3 localPosition = Vector3.zero;
         float midHeight = (numPositionsY - 1) * 0.5f;
@@ -52,6 +57,7 @@ public class PlaceDancePositions : MonoBehaviour
         newDancePositionTransform.SetParent(parentTransform);
         newDancePositionTransform.localPosition = localPosition;
         newDancePositionTransform.localRotation = Quaternion.identity;
+        return newDancePositionTransform;
     }
 #endif
 
