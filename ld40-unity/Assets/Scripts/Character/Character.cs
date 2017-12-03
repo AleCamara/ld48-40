@@ -85,7 +85,7 @@ public class Character : MonoBehaviour
 
             case CharacterType.C:
                 {
-                    happiness = ((numA + numB) - 5f * numC);
+                    happiness = (numC > 1) ? ((numA + numB) - 5f * (numC - 1)) : 0;
                 }
                 break;
         }
