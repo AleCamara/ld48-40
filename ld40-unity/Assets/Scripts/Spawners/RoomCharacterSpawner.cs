@@ -33,6 +33,7 @@ public class RoomCharacterSpawner : MonoBehaviour
 
     private RandomHand<CharacterType> _characterHand = null;
     private RandomHand<int> _roomHand = null;
+    private bool _hasStarted = false;
 
     private void Start()
     {
@@ -55,6 +56,11 @@ public class RoomCharacterSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (!_hasStarted)
+        {
+            return;
+        }
+
         _normalizedElapsedTime += Time.deltaTime / timeToReachEndRateS;
         _timeSinceLastSpawnS += Time.deltaTime;
         float currentSpawnRate = GetCurrentSpawnRate();
@@ -64,6 +70,11 @@ public class RoomCharacterSpawner : MonoBehaviour
             _timeSinceLastSpawnS -= timeToSpawn;
             SpawnCharacterInRandomRoom();
         }
+    }
+
+    public void BeginSpawning()
+    {
+        _hasStarted = true;
     }
 
     private float GetCurrentSpawnRate()
