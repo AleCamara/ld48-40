@@ -115,11 +115,18 @@ public class Room : MonoBehaviour
     public Transform[] roomDancePositions = new Transform[0];
     public float dropCapacityFractionFromTotal = 4f / 5f;
 
-    [Header("UI")]
+    [Header("Type UI")]
     public Image[] uiCharacterImages = null;
     public Color uiHappyColor = Color.green;
     public Color uiNeutralColor = Color.yellow;
     public Color uiUnhappyColor = Color.red;
+    public float sizeHappy = 1f;
+    public float sizeNeutral = 1.2f;
+    public float sizeUnhappy = 1.5f;
+
+    [Header("Charge UI")]
+    public RectTransform uiChargeBar = null;
+    public RectTransform uiChargeIndicator = null;
 
     [Header("Debug")]
     public Text debugText = null;
@@ -129,12 +136,14 @@ public class Room : MonoBehaviour
     private RoomHappiness _roomHappiness = new RoomHappiness();
     private Character[] _characterInDancePosition = null;
     private int _dropCapacity = 0;
+    private float _initialImageSize = 0f;
 
     private void Start()
     {
         int numDancePositions = roomDancePositions.Length;
         _characterInDancePosition = new Character[numDancePositions];
         _dropCapacity = Mathf.FloorToInt(dropCapacityFractionFromTotal * numDancePositions);
+        _initialImageSize = uiCharacterImages[0].rectTransform.localScale.x;
     }
 
     private void Update()
@@ -158,17 +167,32 @@ public class Room : MonoBehaviour
             _roomHappiness.AddHappinessOfCharacter(character);
         }
 
-        // Update UI
+        // Update character type UI
         int numCharTypes = Enum.GetValues(typeof(CharacterType)).Length;
         for (int charTypeIdx = 0; charTypeIdx < numCharTypes; ++charTypeIdx)
         {
-            uiCharacterImages[charTypeIdx].color = GetHappinessColor(_roomHappiness.characterHappiness[charTypeIdx]);
+            float characterTypeHappiness = _roomHappiness.characterHappiness[charTypeIdx];
+            uiCharacterImages[charTypeIdx].color = GetHappinessColor(characterTypeHappiness);
+            uiCharacterImages[charTypeIdx].transform.localScale = Vector3.one * GetHappinessSize(characterTypeHappiness);
         }
+
+        // Update character charge UI
+        PositionChargeIndicatorUi();
 
         if (null != debugText)
         {
             debugText.text = _roomSituation.ToString() + "\n\n" + _roomHappiness.ToString();
         }
+    }
+
+    private void PositionChargeIndicatorUi()
+    {
+        float chargeValue = (_roomSituation.numCharges[(int)CharacterCharge.Positive] - _roomSituation.numCharges[(int)CharacterCharge.Negative]) / 5f;
+        float uiChargeBarHalfWidth = uiChargeBar.rect.width * 0.5f;
+        float positionX = Mathf.Lerp(-uiChargeBarHalfWidth, uiChargeBarHalfWidth, (chargeValue + 1f) * 0.5f);
+        Vector2 newAnchoredPosition = uiChargeIndicator.anchoredPosition;
+        newAnchoredPosition.x = positionX;
+        uiChargeIndicator.anchoredPosition = newAnchoredPosition;
     }
 
     public int NumHappyDancers()
@@ -248,6 +272,24 @@ public class Room : MonoBehaviour
                 break;
             case HappinessState.Unhappy:
                 result = uiUnhappyColor;
+                break;
+        }
+
+        return result;
+    }
+
+    private float GetHappinessSize(float happiness)
+    {
+        HappinessState happinessState = HappinessUtils.GetHappinessStateFromValue(happiness);
+
+        float result = sizeNeutral;
+        switch (happinessState)
+        {
+            case HappinessState.Happy:
+                result = sizeHappy;
+                break;
+            case HappinessState.Unhappy:
+                result = sizeUnhappy;
                 break;
         }
 
