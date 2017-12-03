@@ -233,17 +233,19 @@ public class Room : MonoBehaviour
 
     private Color GetHappinessColor(float happiness)
     {
-        Color colorA = uiNeutralColor;
-        Color colorB = uiHappyColor;
-        float t = Mathf.Clamp(happiness, -1f, 1f);
-
-        if (t < 0)
+        HappinessState happinessState = HappinessUtils.GetHappinessStateFromValue(happiness);
+        
+        Color result = uiNeutralColor;
+        switch (happinessState)
         {
-            colorA = uiUnhappyColor;
-            colorB = uiNeutralColor;
-            t += 1f;
+            case HappinessState.Happy:
+                result = uiHappyColor;
+                break;
+            case HappinessState.Unhappy:
+                result = uiUnhappyColor;
+                break;
         }
 
-        return Color.Lerp(colorA, colorB, t);
+        return result;
     }
 }

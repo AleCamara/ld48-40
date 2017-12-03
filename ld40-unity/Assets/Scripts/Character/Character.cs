@@ -95,14 +95,17 @@ public class Character : MonoBehaviour
 
     private void UpdateFaceSprite()
     {
+        HappinessState happinessState = HappinessUtils.GetHappinessStateFromValue(happiness);
+
         Sprite currentSprite = neutralFace;
-        if (happiness > 0.25f)
+        switch (happinessState)
         {
-            currentSprite = happyFace;
-        }
-        else if (happiness < -0.25f)
-        {
-            currentSprite = sadFace;
+            case HappinessState.Happy:
+                currentSprite = happyFace; 
+                break;
+            case HappinessState.Unhappy:
+                currentSprite = sadFace;
+                break;
         }
 
         faceRenderer.sprite = currentSprite;
