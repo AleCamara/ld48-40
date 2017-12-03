@@ -61,6 +61,22 @@ public class RoomHappiness
         _numCharacters[charTypeIdx]++;
     }
 
+    public int NumHappyDancers()
+    {
+        int numHappyDancers = 0;
+
+        int numCharacterTypes = characterHappiness.Length;
+        for (int characterTypeIdx = 0; characterTypeIdx < numCharacterTypes; ++characterTypeIdx)
+        {
+            if (characterHappiness[characterTypeIdx] > 0.4f)
+            {
+                numHappyDancers += _numCharacters[characterTypeIdx];
+            }
+        }
+
+        return numHappyDancers;
+    }
+
     public void Clear()
     {
         for (int charIdx = 0; charIdx < characterHappiness.Length; ++charIdx)
@@ -143,6 +159,11 @@ public class Room : MonoBehaviour
         {
             debugText.text = _roomSituation.ToString() + "\n\n" + _roomHappiness.ToString();
         }
+    }
+
+    public int NumHappyDancers()
+    {
+        return _roomHappiness.NumHappyDancers();
     }
 
     public bool HasSpawnCapacity()
