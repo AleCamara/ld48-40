@@ -49,6 +49,8 @@ public class IntroController : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1f;
+
         introGO.SetActive(true);
         titleGO.SetActive(true);
         instructions1GO.SetActive(false);
@@ -121,6 +123,7 @@ public class IntroController : MonoBehaviour
                     {
                         if (showChargeIntro)
                         {
+                            Time.timeScale = 0f;
                             chargeInstructions1GO.SetActive(true);
                             chargeIntroGO.SetActive(true);
                             _currentSkipTimeS = timeToSkipChargeInstructions1;

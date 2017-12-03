@@ -133,7 +133,6 @@ public class RoomCharacterSpawner : MonoBehaviour
 
         if (!_hasSplitted && (_characterHand.numHandsDelivered > numVisitorHandsBeforeSplit))
         {
-            Time.timeScale = 0f;
             introController.showChargeIntro = true;
             _hasSplitted = true;
         }
