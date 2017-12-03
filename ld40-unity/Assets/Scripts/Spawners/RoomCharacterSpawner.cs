@@ -29,6 +29,9 @@ public class RoomCharacterSpawner : MonoBehaviour
     public float timeToReachEndRateS = 5 * 60;
     public AnimationCurve rateCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
+    [Header("UI")]
+    public IntroController introController = null;
+
     private float _normalizedElapsedTime = 0f;
     private float _timeSinceLastSpawnS = 0f;
 
@@ -130,6 +133,8 @@ public class RoomCharacterSpawner : MonoBehaviour
 
         if (!_hasSplitted && (_characterHand.numHandsDelivered > numVisitorHandsBeforeSplit))
         {
+            Time.timeScale = 0f;
+            introController.showChargeIntro = true;
             _hasSplitted = true;
         }
         else if (_characterHand.numHandsDelivered > (numVisitorHandsBeforeSplit + numVisitorHandsAfterSplit))

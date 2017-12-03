@@ -4,16 +4,33 @@ public class IntroController : MonoBehaviour
 {
     public RoomCharacterSpawner spawner = null;
 
+    [Header("Intro Objects")]
     public GameObject introGO = null;
     public GameObject titleGO = null;
     public GameObject instructions1GO = null;
     public GameObject instructions2GO = null;
     public GameObject instructions3GO = null;
 
+    [Header("Intro Times")]
     public float timeToSkipTitle = 7f;
     public float timeToSkipInstructions1 = 5f;
     public float timeToSkipInstructions2 = 5f;
     public float timeToSkipInstructions3 = 10f;
+
+    [Header("Charge Objects")]
+    public GameObject chargeIntroGO = null;
+    public GameObject chargeInstructions1GO = null;
+    public GameObject chargeInstructions2GO = null;
+
+    [Header("Charge Times")]
+    public float timeToSkipChargeInstructions1 = 3f;
+    public float timeToSkipChargeInstructions2 = 7f;
+
+    public bool showChargeIntro
+    {
+        get;
+        set;
+    }
 
     private enum State
     {
@@ -21,7 +38,10 @@ public class IntroController : MonoBehaviour
         Instructions1,
         Instructions2,
         Instructions3,
-        Finished
+        FinishedIntro,
+        ChargeInstructions1,
+        ChargeInstructions2,
+        FinalFinished
     }
     private State _currentState = State.Title;
     private float _normalisedElapsedTime = 0f;
@@ -35,19 +55,31 @@ public class IntroController : MonoBehaviour
         instructions2GO.SetActive(false);
         instructions3GO.SetActive(false);
 
+        chargeIntroGO.SetActive(false);
+        chargeInstructions1GO.SetActive(false);
+        chargeInstructions2GO.SetActive(false);
+
+        showChargeIntro = false;
         _currentSkipTimeS = timeToSkipTitle;
     }
 
     private void Update()
     {
-        if (_currentState == State.Finished)
+        bool hasFinished = _currentState == State.FinalFinished;
+        if (hasFinished)
         {
             return;
         }
 
-        _normalisedElapsedTime += Time.deltaTime / _currentSkipTimeS;
+        bool keepWaitingForStartShowingChargeIntro = (_currentState == State.FinishedIntro) && !showChargeIntro;
+        if (keepWaitingForStartShowingChargeIntro)
+        {
+            return;
+        }
 
-        if (Input.anyKeyDown || (_normalisedElapsedTime >= 1f))
+        _normalisedElapsedTime += (Time.timeScale > 0f) ? Time.deltaTime / _currentSkipTimeS : 1f / 30f / _currentSkipTimeS;
+        
+        if (Input.anyKeyDown || (_normalisedElapsedTime >= 1f) || (_currentState == State.FinishedIntro))
         {
             _normalisedElapsedTime = 0;
             switch (_currentState)
@@ -81,6 +113,35 @@ public class IntroController : MonoBehaviour
                     {
                         introGO.SetActive(false);
                         spawner.BeginSpawning();
+                        _currentState = State.FinishedIntro;
+                    }
+                    break;
+
+                case State.FinishedIntro:
+                    {
+                        if (showChargeIntro)
+                        {
+                            chargeInstructions1GO.SetActive(true);
+                            chargeIntroGO.SetActive(true);
+                            _currentSkipTimeS = timeToSkipChargeInstructions1;
+                            _currentState = State.ChargeInstructions1;
+                        }
+                    }
+                    break;
+
+                case State.ChargeInstructions1:
+                    {
+                        chargeInstructions2GO.SetActive(true);
+                        _currentSkipTimeS = timeToSkipChargeInstructions2;
+                        _currentState = State.ChargeInstructions2;
+                    }
+                    break;
+
+                case State.ChargeInstructions2:
+                    {
+                        chargeIntroGO.SetActive(false);
+                        _currentState = State.FinalFinished;
+                        Time.timeScale = 1f;
                     }
                     break;
             }
