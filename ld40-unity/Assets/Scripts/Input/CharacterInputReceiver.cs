@@ -57,7 +57,7 @@ public class CharacterInputReceiver : BaseInputReceiver
             }
         }
 
-        if ((null != droppedToRoom) && (droppedToRoom.HasDropCapacity()))
+        if ((null != droppedToRoom) && (droppedToRoom.HasCapacity()))
         {
             droppedToRoom.AddCharacter(character);
             Vector3 targetPosition = ray.origin;

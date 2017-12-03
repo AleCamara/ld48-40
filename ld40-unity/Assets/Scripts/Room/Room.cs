@@ -166,12 +166,7 @@ public class Room : MonoBehaviour
         return _roomHappiness.NumHappyDancers();
     }
 
-    public bool HasSpawnCapacity()
-    {
-        return _characters.Count < _spawnCapacity;
-    }
-
-    public bool HasDropCapacity()
+    public bool HasCapacity()
     {
         return _characters.Count < _dropCapacity;
     }

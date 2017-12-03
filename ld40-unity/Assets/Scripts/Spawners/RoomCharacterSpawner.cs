@@ -9,8 +9,6 @@ public class RoomSpawnPositions
 
     [HideInInspector]
     public RandomHand<Transform> positionHand = null;
-    [HideInInspector]
-    public bool stopSpawning = false;
 }
 
 public class RoomCharacterSpawner : MonoBehaviour
@@ -21,6 +19,8 @@ public class RoomCharacterSpawner : MonoBehaviour
     public CharacterType[] visitorHand = new CharacterType[0];
     public RoomSpawnPositions[] spawnPositions = new RoomSpawnPositions[0];
     public int numTimesRoomInHand = 4;
+    public int numVisitorHandsBeforeSplit = 7;
+    public int numVisitorHandsAfterSplit = 7;
 
     [Header("Spawn Rate")]
     public float startRate = 1f / 10f;
@@ -34,6 +34,9 @@ public class RoomCharacterSpawner : MonoBehaviour
     private RandomHand<CharacterType> _characterHand = null;
     private RandomHand<int> _roomHand = null;
     private bool _hasStarted = false;
+    private bool _hasSplitted = false;
+    private int _numVisitorHandsDelivered = 0;
+    private bool _hasStoppedSpawning = false;
 
     private void Start()
     {
@@ -56,7 +59,7 @@ public class RoomCharacterSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (!_hasStarted)
+        if (!_hasStarted || _hasStoppedSpawning)
         {
             return;
         }
@@ -85,6 +88,11 @@ public class RoomCharacterSpawner : MonoBehaviour
 
     private void SpawnCharacterInRandomRoom()
     {
+        if (_hasStoppedSpawning)
+        {
+            return;
+        }
+
         CharacterType characterType = _characterHand.GetRandomElement();
         int characterTypeIdx = (int)characterType;
         if (characterTypeIdx >= visitorPrefabs.Length)
@@ -100,17 +108,16 @@ public class RoomCharacterSpawner : MonoBehaviour
             return;
         }
 
-        Room room = spawnPositions[roomIndex].room;
-        if (!room.HasSpawnCapacity())
+        if (!_hasSplitted && (_characterHand.numHandsDelivered > numVisitorHandsBeforeSplit))
         {
-            spawnPositions[roomIndex].stopSpawning = true;
+            _hasSplitted = true;
+        }
+        else if (_characterHand.numHandsDelivered > (numVisitorHandsBeforeSplit + numVisitorHandsAfterSplit))
+        {
+            _hasStoppedSpawning = true;
         }
 
-        if (spawnPositions[roomIndex].stopSpawning)
-        {
-            return;
-        }
-        
+        Room room = spawnPositions[roomIndex].room;        
         GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
         Character character = characterGO.GetComponent<Character>();
 
