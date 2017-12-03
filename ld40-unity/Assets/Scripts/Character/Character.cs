@@ -73,23 +73,23 @@ public class Character : MonoBehaviour
         {
             case CharacterType.A:
                 {
-                    happiness = 1 + (numA - (numB + numC));
+                    happiness = (numA - (numB + numC));
                 }
                 break;
 
             case CharacterType.B:
                 {
-                    happiness = 1 + (numB - 2f * numC);
+                    happiness = (numB - 2f * numC);
                 }
                 break;
 
             case CharacterType.C:
                 {
-                    happiness = 1 + ((numA + numB) - 5f * numC);
+                    happiness = ((numA + numB) - 5f * numC);
                 }
                 break;
         }
-        happiness = Mathf.Clamp(happiness * peopleTolerance, -1f, 1f);
+        happiness = Mathf.Clamp(1 + happiness * peopleTolerance, -1f, 1f);
         UpdateFaceSprite();
     }
 
