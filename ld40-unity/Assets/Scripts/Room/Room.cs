@@ -6,10 +6,12 @@ using UnityEngine.UI;
 public class RoomSituation
 {
     public int[] numCharacters = null;
+    public int[] numCharges = null;
 
     public RoomSituation()
     {
         numCharacters = new int[Enum.GetValues(typeof(CharacterType)).Length];
+        numCharges = new int[Enum.GetValues(typeof(CharacterCharge)).Length];
         Clear();
     }
 
@@ -19,15 +21,25 @@ public class RoomSituation
         {
             numCharacters[charIdx] = 0;
         }
+        for (int chargeIdx = 0; chargeIdx < numCharges.Length; ++chargeIdx)
+        {
+            numCharges[chargeIdx] = 0;
+        }
     }
 
     public override string ToString()
     {
-        string result = "RoomSituation:";
+        string result = "Room Population:";
         for (int characterTypeIdx = 0; characterTypeIdx < numCharacters.Length; ++characterTypeIdx)
         {
             CharacterType characterType = (CharacterType)characterTypeIdx;
             result += "\n\tNum Type " + characterType.ToString() + ": " + numCharacters[characterTypeIdx].ToString();
+        }
+        result += "\n\nRoom Charge:";
+        for (int chargeTypeIdx = 0; chargeTypeIdx < numCharges.Length; ++chargeTypeIdx)
+        {
+            CharacterCharge chargeType = (CharacterCharge)chargeTypeIdx;
+            result += "\n\tNum Charge " + chargeType.ToString() + ": " + numCharges[chargeTypeIdx].ToString();
         }
         return result;
     }
@@ -88,7 +100,7 @@ public class RoomHappiness
 
     public override string ToString()
     {
-        string result = "RoomHappiness:";
+        string result = "Room Happiness:";
         for (int characterTypeIdx = 0; characterTypeIdx < characterHappiness.Length; ++characterTypeIdx)
         {
             CharacterType characterType = (CharacterType)characterTypeIdx;
@@ -101,7 +113,6 @@ public class RoomHappiness
 public class Room : MonoBehaviour
 {
     public Transform[] roomDancePositions = new Transform[0];
-    public float spawnCapacityFractionFromTotal = 3f / 4f;
     public float dropCapacityFractionFromTotal = 4f / 5f;
 
     [Header("UI")]
@@ -117,14 +128,12 @@ public class Room : MonoBehaviour
     private RoomSituation _roomSituation = new RoomSituation();
     private RoomHappiness _roomHappiness = new RoomHappiness();
     private Character[] _characterInDancePosition = null;
-    private int _spawnCapacity = 0;
     private int _dropCapacity = 0;
 
     private void Start()
     {
         int numDancePositions = roomDancePositions.Length;
         _characterInDancePosition = new Character[numDancePositions];
-        _spawnCapacity = Mathf.FloorToInt(spawnCapacityFractionFromTotal * numDancePositions);
         _dropCapacity = Mathf.FloorToInt(dropCapacityFractionFromTotal * numDancePositions);
     }
 
@@ -139,6 +148,7 @@ public class Room : MonoBehaviour
         foreach (Character character in _characters)
         {
             _roomSituation.numCharacters[(int)character.characterType]++;
+            _roomSituation.numCharges[(int)character.characterCharge]++;
         }
 
         // Tell situation to all characters and gather their happiness

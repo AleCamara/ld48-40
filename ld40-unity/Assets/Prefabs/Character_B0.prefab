@@ -550,12 +550,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 1
+  characterCharge: 0
   speed: 1
   peopleTolerance: 0.75
   faceRenderer: {fileID: 212912665207728094}
   happyFace: {fileID: 21300000, guid: e313f3f185bd4f142af1505abb9f062f, type: 3}
   neutralFace: {fileID: 21300000, guid: 7bef13c353674f841b4880d841cee575, type: 3}
   sadFace: {fileID: 21300000, guid: 3356dd3f2bb913942bf98393608184b4, type: 3}
+  chargeRenderers:
+  - {fileID: 23573851332505354}
+  - {fileID: 120585327863473024}
+  - {fileID: 120279467698956834}
+  neutralColor: {r: 0.88235295, g: 0.7737459, b: 0.32823527, a: 1}
+  positiveColor: {r: 0.7882353, g: 0.22745098, b: 0.30588236, a: 1}
+  negativeColor: {r: 0.13333334, g: 0.65882355, b: 0.6627451, a: 1}
 --- !u!114 &114347748681762590
 MonoBehaviour:
   m_ObjectHideFlags: 1

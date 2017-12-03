@@ -17,6 +17,7 @@ public class RoomCharacterSpawner : MonoBehaviour
     public GameObject[] visitorPrefabs = new GameObject[0];
     public Transform visitorParent = null;
     public CharacterType[] visitorHand = new CharacterType[0];
+    public CharacterCharge[] chargeHand = new CharacterCharge[0];
     public RoomSpawnPositions[] spawnPositions = new RoomSpawnPositions[0];
     public int numTimesRoomInHand = 4;
     public int numVisitorHandsBeforeSplit = 7;
@@ -32,15 +33,16 @@ public class RoomCharacterSpawner : MonoBehaviour
     private float _timeSinceLastSpawnS = 0f;
 
     private RandomHand<CharacterType> _characterHand = null;
+    private RandomHand<CharacterCharge> _chargeHand = null;
     private RandomHand<int> _roomHand = null;
     private bool _hasStarted = false;
     private bool _hasSplitted = false;
-    private int _numVisitorHandsDelivered = 0;
     private bool _hasStoppedSpawning = false;
 
     private void Start()
     {
         _characterHand = new RandomHand<CharacterType>(visitorHand);
+        _chargeHand = new RandomHand<CharacterCharge>(chargeHand);
 
         int numRooms = spawnPositions.Length;
         int numRoomsInHand = numTimesRoomInHand * numRooms;
@@ -108,6 +110,24 @@ public class RoomCharacterSpawner : MonoBehaviour
             return;
         }
 
+        CharacterCharge characterCharge = CharacterCharge.Neutral;
+        if (_hasSplitted)
+        {
+            characterCharge = _chargeHand.GetRandomElement();
+        }
+
+        Room room = spawnPositions[roomIndex].room;        
+        GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
+        Character character = characterGO.GetComponent<Character>();
+        character.characterCharge = characterCharge;
+
+        Vector3 characterPosition = spawnPositions[roomIndex].positionHand.GetRandomElement().position;
+        characterPosition.z = characterGO.transform.position.z;
+        characterGO.transform.position = characterPosition;
+        character.targetPosition = room.GetRandomFreeDancePosition();
+
+        room.AddCharacter(character);
+
         if (!_hasSplitted && (_characterHand.numHandsDelivered > numVisitorHandsBeforeSplit))
         {
             _hasSplitted = true;
@@ -116,16 +136,5 @@ public class RoomCharacterSpawner : MonoBehaviour
         {
             _hasStoppedSpawning = true;
         }
-
-        Room room = spawnPositions[roomIndex].room;        
-        GameObject characterGO = Instantiate(visitorPrefabs[characterTypeIdx], visitorParent);
-        Character character = characterGO.GetComponent<Character>();
-
-        Vector3 characterPosition = spawnPositions[roomIndex].positionHand.GetRandomElement().position;
-        characterPosition.z = characterGO.transform.position.z;
-        characterGO.transform.position = characterPosition;
-        character.targetPosition = room.GetRandomFreeDancePosition();
-
-        room.AddCharacter(character);
     }
 }

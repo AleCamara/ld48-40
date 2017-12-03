@@ -7,20 +7,40 @@ public enum CharacterType
     C
 }
 
+public enum CharacterCharge
+{
+    Neutral,
+    Positive,
+    Negative
+}
+
 public class Character : MonoBehaviour
 {
+    private static readonly string MATERIAL_CHARGE_COLOR_PROPERTY = "_Color";
+
     [Header("Character Settings")]
     public CharacterType characterType = CharacterType.A;
+    public CharacterCharge characterCharge = CharacterCharge.Neutral;
     public float speed = 1f;
 
     [Header("Happiness")]
     public float peopleTolerance = 1f;
+    public float chargeTolerance = 0.4f;
 
     [Header("Character Face")]
     public SpriteRenderer faceRenderer = null;
     public Sprite happyFace = null;
     public Sprite neutralFace = null;
     public Sprite sadFace = null;
+
+    [Header("Character Charge")]
+    public Renderer[] chargeRenderers = null;
+    public Color neutralColor = Color.white;
+    public Color positiveColor = Color.red;
+    public Color negativeColor = Color.blue;
+
+    private CharacterCharge _currentCharge = CharacterCharge.Neutral;
+    private MaterialPropertyBlock[] _propertyBlocks = null;
 
     public float happiness
     {
@@ -46,8 +66,22 @@ public class Character : MonoBehaviour
         set;
     }
 
+    private void Start()
+    {
+        _propertyBlocks = new MaterialPropertyBlock[chargeRenderers.Length];
+        for (int blockIdx = 0; blockIdx < chargeRenderers.Length; ++blockIdx)
+        {
+            _propertyBlocks[blockIdx] = new MaterialPropertyBlock();
+        }
+    }
+
     private void Update()
     {
+        if (_currentCharge != characterCharge)
+        {
+            UpdateCharacterCharge();
+        }
+
         if (isDragged)
         {
             return;
@@ -69,27 +103,36 @@ public class Character : MonoBehaviour
         int numA = roomSituation.numCharacters[(int)CharacterType.A];
         int numB = roomSituation.numCharacters[(int)CharacterType.B];
         int numC = roomSituation.numCharacters[(int)CharacterType.C];
+
+        int numPositive = roomSituation.numCharges[(int)CharacterCharge.Positive];
+        int numNegative = roomSituation.numCharges[(int)CharacterCharge.Negative];
+
+        float typeHappiness = 0f;
         switch (characterType)
         {
             case CharacterType.A:
                 {
-                    happiness = (numA - (numB + numC));
+                    typeHappiness = (numA - (numB + numC));
                 }
                 break;
 
             case CharacterType.B:
                 {
-                    happiness = (numB - 2f * numC);
+                    typeHappiness = (numB - 2f * numC);
                 }
                 break;
 
             case CharacterType.C:
                 {
-                    happiness = (numC > 1) ? ((numA + numB) - 5f * (numC - 1)) : 0;
+                    typeHappiness = (numC > 1) ? ((numA + numB) - 5f * (numC - 1)) : 0;
                 }
                 break;
         }
-        happiness = Mathf.Clamp(1 + happiness * peopleTolerance, -1f, 1f);
+        typeHappiness = 1 + typeHappiness * peopleTolerance;
+
+        float chargeHappiness = -Mathf.Abs(numPositive - numNegative) * chargeTolerance;
+
+        happiness = Mathf.Clamp(typeHappiness + chargeHappiness, -1f, 1f);
         UpdateFaceSprite();
     }
 
@@ -109,5 +152,32 @@ public class Character : MonoBehaviour
         }
 
         faceRenderer.sprite = currentSprite;
+    }
+
+    private void UpdateCharacterCharge()
+    {
+        Color newChargeColor = neutralColor;
+        switch (characterCharge)
+        {
+            case CharacterCharge.Positive:
+                newChargeColor = positiveColor;
+                break;
+
+            case CharacterCharge.Negative:
+                newChargeColor = negativeColor;
+                break;
+        }
+
+        for (int rendererIdx = 0; rendererIdx < chargeRenderers.Length; ++rendererIdx)
+        {
+            Renderer chargeRenderer = chargeRenderers[rendererIdx];
+            MaterialPropertyBlock propertyBlock = _propertyBlocks[rendererIdx];
+
+            chargeRenderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor(MATERIAL_CHARGE_COLOR_PROPERTY, newChargeColor);
+            chargeRenderer.SetPropertyBlock(propertyBlock);
+        }
+
+        _currentCharge = characterCharge;
     }
 }
